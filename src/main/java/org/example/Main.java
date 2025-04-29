@@ -23,7 +23,7 @@ public class Main {
         conn.connect();
 
         int responseCode = conn.getResponseCode();
-        String response = "";
+        String response;
 
         if (responseCode == 200) {
             StringBuilder responseBuilder = new StringBuilder();
@@ -40,7 +40,6 @@ public class Main {
             // Obtener el objeto "rates"
             JsonObject rates = jsonObject.getAsJsonObject("rates");
 
-            // Obtener el valor de la moneda "to"
             if (rates.has(to)) {
                 double rate = rates.get(to).getAsDouble() * value;
                 response = String.valueOf(rate);
@@ -77,91 +76,61 @@ public class Main {
                 ******************************************
                 """;
         String input_message = "Ingresa la operacion que deseas realizar: ";
-        String output_message = "";
         Scanner scanner = new Scanner(System.in);
         String input;
         String url = "https://api.exchangerate-api.com/v4/latest/";
-        String from = "";
-        String to = "";
-        double value;
+        String from;
+        String to;
 
         while (!exit) {
             System.out.println(message + "\n" + input_message);
 
             input = scanner.nextLine();
             switch (input) {
-                case "7" -> {
-                    exit = true;
-                    break;
-                }
+                case "7" -> exit = true;
                 case "1" -> {
                     from = "USD";
                     to = "ARS";
-                    System.out.println("Ingresa un valor a convertir");
-                    value = scanner.nextDouble();
-                    String valor = fetchData(url + from, to, value);
-                    output_message = "El valor de 1 " + from + " equivale al valor final de : " + valor + " " + to + "\n";
-                    System.out.printf(output_message);
-                    break;
+                    getValueToConvert(scanner, url, from, to);
                 }
                 case "2" -> {
                     from = "ARS";
                     to = "USD";
-                    System.out.println("Ingresa un valor a convertir");
-                    value = scanner.nextDouble();
-                    String valor = fetchData(url + to, to, value);
-                    output_message = "El valor de 1 " + from + " equivale al valor final de : " + valor + " " + to + "\n";
-                    System.out.printf(output_message);
-                    break;
+                    getValueToConvert(scanner, url, from, to);
                 }
                 case "3" -> {
                     from = "USD";
                     to = "BRL";
-                    System.out.println("Ingresa un valor a convertir");
-                    value = scanner.nextDouble();
-                    String valor = fetchData(url + from, to, value);
-                    output_message = "El valor de 1 " + from + " equivale al valor final de : " + valor + " " + to + "\n";
-                    System.out.printf(output_message);
-                    break;
+                    getValueToConvert(scanner, url, from, to);
                 }
                 case "4" -> {
                     from = "BRL";
                     to = "USD";
-                    System.out.println("Ingresa un valor a convertir");
-                    value = scanner.nextDouble();
-                    String valor = fetchData(url + to, to, value);
-                    output_message = "El valor de 1 " + from + " equivale al valor final de : " + valor + " " + to + "\n";
-                    System.out.printf(output_message);
-                    break;
+                    getValueToConvert(scanner, url, from, to);
                 }
                 case "5" -> {
                     from = "USD";
                     to = "COP";
-                    System.out.println("Ingresa un valor a convertir");
-                    value = scanner.nextDouble();
-                    String valor = fetchData(url + from, to, value);
-                    output_message = "El valor de 1 " + from + " equivale al valor final de : " + valor + " " + to + "\n";
-                    System.out.printf(output_message);
-                    break;
+                    getValueToConvert(scanner, url, from, to);
                 }
                 case "6" -> {
                     from = "COP";
                     to = "USD";
-                    System.out.println("Ingresa un valor a convertir");
-                    value = scanner.nextDouble();
-                    String valor = fetchData(url + to, to, value);
-                    output_message = "El valor de 1 " + from + " equivale al valor final de : " + valor + " " + to + "\n";
-                    System.out.printf(output_message);
-                    break;
+                    getValueToConvert(scanner, url, from, to);
                 }
-                default -> {
-                    System.out.println("Opción no válida. Por favor, elige una opción del menú.");
-                    break;
-                }
+                default -> System.out.println("Opción no válida. Por favor, elige una opción del menú.");
             }
         }
 
     }
 
-
+    private static void getValueToConvert(Scanner scanner, String url, String from, String to) throws IOException {
+        double value;
+        String output_message;
+        System.out.println("Ingresa un valor a convertir");
+        value = scanner.nextDouble();
+        String valor = fetchData(url + from, to, value);
+        output_message = "El valor de 1 " + from + " equivale al valor final de : " + valor + " " + to + "\n";
+        System.out.printf(output_message);
+    }
 }
